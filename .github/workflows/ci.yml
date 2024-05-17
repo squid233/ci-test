@@ -53,12 +53,12 @@ jobs:
         run: |
           source scl_source enable devtoolset-11 || true
           cmake3 --build build --parallel
-          strip build/src/libhello.so
+          strip build/lib/libhello.so
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-${{matrix.ARCH}}
-          path: build/src/libhello.so
+          path: build/lib/libhello.so
           if-no-files-found: error
 
   linux-cross:
@@ -132,12 +132,12 @@ jobs:
       - name: Build
         run: |
           cmake --build build --parallel
-          ${{matrix.TRIPLET}}-strip build/src/libhello.so
+          ${{matrix.TRIPLET}}-strip build/lib/libhello.so
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: linux-${{matrix.ARCH}}
-          path: build/src/libhello.so
+          path: build/lib/libhello.so
           if-no-files-found: error
 
   freebsd-cross:
@@ -162,12 +162,12 @@ jobs:
             sudo pkg install -y cmake gmake pkgconf
             cmake -B build $CI_PARAMS -DCMAKE_C_FLAGS="-std=c99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0"
             cmake --build build --parallel
-            strip build/src/libhello.so
+            strip build/lib/libhello.so
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: freebsd-${{matrix.ARCH}}
-          path: build/src/libhello.so
+          path: build/lib/libhello.so
           if-no-files-found: error
 
   macos:
@@ -190,12 +190,12 @@ jobs:
       - name: Build
         run: |
           cmake --build build --parallel
-          strip -u -r build/src/libhello.dylib
+          strip -u -r build/lib/libhello.dylib
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: freebsd-${{matrix.ARCH}}
-          path: build/src/libhello.dylib
+          path: build/lib/libhello.dylib
           if-no-files-found: error
 
   windows:
@@ -224,5 +224,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: freebsd-${{matrix.ARCH}}
-          path: build\src\Release\hello.dll
+          path: build\Release\hello.dll
           if-no-files-found: error
