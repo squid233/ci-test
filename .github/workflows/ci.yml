@@ -82,17 +82,17 @@ jobs:
       run:
         shell: bash
     steps:
-      # - name: Update apt repositories
-      #   run: |
-      #     apt-get -y update
-      #     apt-get -y install software-properties-common wget
-      #     apt-get -y install --reinstall ca-certificates
-      #     apt-get -y update
-      #     apt-get -y upgrade
-      #     wget https://apt.kitware.com/keys/kitware-archive-latest.asc
-      #     apt-key add kitware-archive-latest.asc
-      #     add-apt-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
-      #     add-apt-repository -y ppa:git-core/ppa
+      - name: Update apt repositories
+        run: |
+          sudo apt-get -y update
+          sudo apt-get -y install software-properties-common wget
+          sudo apt-get -y install --reinstall ca-certificates
+          sudo apt-get -y update
+          sudo apt-get -y upgrade
+          sudo wget https://apt.kitware.com/keys/kitware-archive-latest.asc
+          sudo apt-key add kitware-archive-latest.asc
+          sudo add-apt-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
+          sudo add-apt-repository -y ppa:git-core/ppa
       #   if: ${{ matrix.CONTAINER == 'ubuntu:18.04' }}
       - name: Upgrade git
         run: |
@@ -112,8 +112,8 @@ jobs:
       #     sudo apt-get update
 
       - run: sudo sed -i 's/deb http/deb [arch=amd64,i386] http/' /etc/apt/sources.list
-      - run: grep "ubuntu.com/ubuntu" /etc/apt/sources.list
-      # - run: grep "ubuntu.com/ubuntu" /etc/apt/sources.list | sudo tee /etc/apt/sources.list.d/ports.list
+      # - run: grep "ubuntu.com/ubuntu" /etc/apt/sources.list
+      - run: grep "ubuntu.com/ubuntu" /etc/apt/sources.list | sudo tee /etc/apt/sources.list.d/ports.list
       - run: sudo sed -i 's/amd64,i386/${{matrix.CROSS_ARCH}}/' /etc/apt/sources.list.d/ports.list
       - run: sudo sed -i 's#http://.*/ubuntu#http://ports.ubuntu.com/ubuntu-ports#' /etc/apt/sources.list.d/ports.list
       - run: sudo dpkg --add-architecture ${{matrix.CROSS_ARCH}}
