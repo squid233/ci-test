@@ -27,28 +27,28 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Install yum
-        run: |
-          apt-get update
-          apt-get upgrade
-          apt-get install build-essential
-          apt-get install yum
       - name: Upgrade git
+        # run: |
+          # yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
+          # yum -y install git
         run: |
-          yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
-          yum -y install git
+          sudo apt-get update
+          sudo apt-get install git
       - uses: actions/checkout@v3
         with:
           fetch-depth: 3
-      - name: Configure yum
-        run: |
-          yum -y install epel-release
-          yum -y update
+      # - name: Configure yum
+        # run: |
+          # yum -y install epel-release
+          # yum -y update
       - name: Install build dependencies
+        # run: |
+        #   yum -y install centos-release-scl
+        #   yum -y install devtoolset-11-gcc-c++
+        #   yum -y install cmake3 awscli
         run: |
-          yum -y install centos-release-scl
-          yum -y install devtoolset-11-gcc-c++
-          yum -y install cmake3 awscli
+          sudo apt-get install devtoolset-11-gcc-c++
+          sudo apt-get install cmake3
       # - name: Install CI dependencies
         # run: yum -y install libhello
       - name: Configure build
