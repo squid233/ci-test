@@ -98,7 +98,7 @@ jobs:
         run: |
           sudo apt-get -y update
           sudo apt-get -y upgrade
-          DEBIAN_FRONTEND=noninteractive apt-get -yq install awscli git cmake pkg-config
+          DEBIAN_FRONTEND=noninteractive sudo apt-get -yq install git cmake pkg-config
       - uses: actions/checkout@v3
         with:
           fetch-depth: 3
