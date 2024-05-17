@@ -99,7 +99,7 @@ jobs:
           apt-get -y update
           apt-get -y upgrade
           DEBIAN_FRONTEND=noninteractive apt-get -yq install git cmake pkg-config
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 3
       - name: Prepare cross-compilation for ${{matrix.CROSS_ARCH}}
