@@ -27,30 +27,9 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Upgrade git
-        # run: |
-          # yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm
-          # yum -y install git
-        run: |
-          sudo apt-get update
-          sudo apt-get install git
       - uses: actions/checkout@v3
         with:
           fetch-depth: 3
-      # - name: Configure yum
-        # run: |
-          # yum -y install epel-release
-          # yum -y update
-      # - name: Install build dependencies
-        # run: |
-        #   yum -y install centos-release-scl
-        #   yum -y install devtoolset-11-gcc-c++
-        #   yum -y install cmake3 awscli
-        # run: |
-          # sudo apt-get install gcc-11
-          # sudo apt-get install cmake3
-      # - name: Install CI dependencies
-        # run: yum -y install libhello
       - name: Configure build
         run: |
           source scl_source enable devtoolset-11 || true
@@ -103,22 +82,22 @@ jobs:
       run:
         shell: bash
     steps:
-      - name: Update apt repositories
-        run: |
-          apt-get -y update
-          apt-get -y install software-properties-common wget
-          apt-get -y install --reinstall ca-certificates
-          apt-get -y update
-          apt-get -y upgrade
-          wget https://apt.kitware.com/keys/kitware-archive-latest.asc
-          apt-key add kitware-archive-latest.asc
-          add-apt-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
-          add-apt-repository -y ppa:git-core/ppa
-        if: ${{ matrix.CONTAINER == 'ubuntu:18.04' }}
+      # - name: Update apt repositories
+      #   run: |
+      #     apt-get -y update
+      #     apt-get -y install software-properties-common wget
+      #     apt-get -y install --reinstall ca-certificates
+      #     apt-get -y update
+      #     apt-get -y upgrade
+      #     wget https://apt.kitware.com/keys/kitware-archive-latest.asc
+      #     apt-key add kitware-archive-latest.asc
+      #     add-apt-repository -y 'deb https://apt.kitware.com/ubuntu/ bionic main'
+      #     add-apt-repository -y ppa:git-core/ppa
+      #   if: ${{ matrix.CONTAINER == 'ubuntu:18.04' }}
       - name: Upgrade git
         run: |
-          apt-get -y update
-          apt-get -y upgrade
+          sudo apt-get -y update
+          sudo apt-get -y upgrade
           DEBIAN_FRONTEND=noninteractive apt-get -yq install awscli git cmake pkg-config
       - uses: actions/checkout@v3
         with:
