@@ -41,24 +41,24 @@ jobs:
         # run: |
           # yum -y install epel-release
           # yum -y update
-      - name: Install build dependencies
+      # - name: Install build dependencies
         # run: |
         #   yum -y install centos-release-scl
         #   yum -y install devtoolset-11-gcc-c++
         #   yum -y install cmake3 awscli
-        run: |
-          sudo apt-get install devtoolset-11-gcc-c++
-          sudo apt-get install cmake3
+        # run: |
+          # sudo apt-get install gcc-11
+          # sudo apt-get install cmake3
       # - name: Install CI dependencies
         # run: yum -y install libhello
       - name: Configure build
         run: |
           source scl_source enable devtoolset-11 || true
-          cmake3 -B build $CI_PARAMS -DCMAKE_C_FLAGS="-std=c99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0"
+          cmake -B build $CI_PARAMS -DCMAKE_C_FLAGS="-std=c99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0"
       - name: Build
         run: |
           source scl_source enable devtoolset-11 || true
-          cmake3 --build build --parallel
+          cmake --build build --parallel
           strip build/libhello.so
       - name: Upload artifact
         uses: actions/upload-artifact@v4
