@@ -60,17 +60,17 @@ jobs:
           # ----
           - ARCH: arm32
             CROSS_ARCH: armhf
-            CONTAINER: ubuntu:18.04
+            CONTAINER: ubuntu:20.04
             TRIPLET: arm-linux-gnueabihf
           # ----
           - ARCH: arm64
             CROSS_ARCH: arm64
-            CONTAINER: ubuntu:18.04
+            CONTAINER: ubuntu:20.04
             TRIPLET: aarch64-linux-gnu
           # ----
           - ARCH: ppc64le
             CROSS_ARCH: ppc64el
-            CONTAINER: ubuntu:18.04
+            CONTAINER: ubuntu:20.04
             TRIPLET: powerpc64le-linux-gnu
           # ----
           - ARCH: riscv64
@@ -100,7 +100,7 @@ jobs:
           apt-get -y update
           apt-get -y upgrade
           DEBIAN_FRONTEND=noninteractive apt-get -yq install git cmake pkg-config
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 3
       - name: Prepare cross-compilation for ${{matrix.CROSS_ARCH}}
@@ -120,7 +120,7 @@ jobs:
           cmake --build build --parallel
           ${{matrix.TRIPLET}}-strip build/libhello.so
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: linux-${{matrix.ARCH}}
           path: build/libhello.so
