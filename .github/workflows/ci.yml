@@ -91,12 +91,12 @@ jobs:
           apt-get -y update
           apt-get -y upgrade
           test -f /usr/share/doc/kitware-archive-keyring/copyright ||
-          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-          echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | sudo tee /etc/apt/sources.list.d/kitware.list >/dev/null
+          wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+          echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ jammy main' | tee /etc/apt/sources.list.d/kitware.list >/dev/null
           apt-get -y update
           test -f /usr/share/doc/kitware-archive-keyring/copyright ||
-          sudo rm /usr/share/keyrings/kitware-archive-keyring.gpg
-          sudo apt-get install kitware-archive-keyring
+          rm /usr/share/keyrings/kitware-archive-keyring.gpg
+          apt-get install kitware-archive-keyring
       #   if: ${{ matrix.CONTAINER == 'ubuntu:18.04' }}
       - name: Upgrade git
         run: |
