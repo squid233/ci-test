@@ -104,11 +104,11 @@ jobs:
           fetch-depth: 3
       - name: Prepare cross-compilation for ${{matrix.CROSS_ARCH}}
         run: |
-          sed -i 's/deb http/deb [arch=amd64,i386] http/' /etc/apt/sources.list
-          grep "ubuntu.com/ubuntu" /etc/apt/sources.list | tee /etc/apt/sources.list.d/ports.list
-          sed -i 's/amd64,i386/${{matrix.CROSS_ARCH}}/' /etc/apt/sources.list.d/ports.list
-          sed -i 's#http://.*/ubuntu#http://ports.ubuntu.com/ubuntu-ports#' /etc/apt/sources.list.d/ports.list
-          dpkg --add-architecture ${{matrix.CROSS_ARCH}}
+          sudo sed -i 's/deb http/deb [arch=amd64,i386] http/' /etc/apt/sources.list
+          grep "ubuntu.com/ubuntu" /etc/apt/sources.list | sudo tee /etc/apt/sources.list.d/ports.list
+          sudo sed -i 's/amd64,i386/${{matrix.CROSS_ARCH}}/' /etc/apt/sources.list.d/ports.list
+          sudo sed -i 's#http://.*/ubuntu#http://ports.ubuntu.com/ubuntu-ports#' /etc/apt/sources.list.d/ports.list
+          sudo dpkg --add-architecture ${{matrix.CROSS_ARCH}}
           sudo apt-get update
       - name: Install dependencies
         run: sudo apt-get -yq --no-install-suggests --no-install-recommends install gcc-${{matrix.TRIPLET}} libc6-dev-${{matrix.CROSS_ARCH}}-cross
