@@ -13,7 +13,7 @@ env:
 jobs:
   linux:
     name: Linux
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     # container:
     #   image: centos:7
     strategy:
@@ -50,8 +50,6 @@ jobs:
   linux-cross:
     name: Linux Cross
     runs-on: ubuntu-latest
-    container:
-      image: ${{matrix.CONTAINER}}
     strategy:
       fail-fast: false
       matrix:
@@ -60,23 +58,23 @@ jobs:
           # ----
           - ARCH: arm32
             CROSS_ARCH: armhf
-            CONTAINER: ubuntu:22.04
             TRIPLET: arm-linux-gnueabihf
+            CMAKE_PARAMS: -DPROCESSOR=arm
           # ----
           - ARCH: arm64
             CROSS_ARCH: arm64
-            CONTAINER: ubuntu:22.04
             TRIPLET: aarch64-linux-gnu
+            CMAKE_PARAMS: -DPROCESSOR=aarch64
           # ----
           - ARCH: ppc64le
             CROSS_ARCH: ppc64el
-            CONTAINER: ubuntu:22.04
             TRIPLET: powerpc64le-linux-gnu
+            CMAKE_PARAMS: -DPROCESSOR=powerpc64le
           # ----
           - ARCH: riscv64
             CROSS_ARCH: riscv64
-            CONTAINER: ubuntu:22.04
             TRIPLET: riscv64-linux-gnu
+            CMAKE_PARAMS: -DPROCESSOR=riscv64
     env:
       CI_ARCH: ${{matrix.ARCH}}
     defaults:
@@ -117,7 +115,7 @@ jobs:
       - name: Install dependencies
         run: apt-get -yq --no-install-suggests --no-install-recommends install gcc-${{matrix.TRIPLET}} libc6-dev-${{matrix.CROSS_ARCH}}-cross
       - name: Configure build
-        run: PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:${CMAKE_SYSROOT}/usr/lib/${{matrix.TRIPLET}}/pkgconfig CC=${{matrix.TRIPLET}}-gcc cmake -B build $CI_PARAMS -DCMAKE_C_FLAGS="-std=c99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0"
+        run: PKG_CONFIG_PATH=${PKG_CONFIG_PATH}:${CMAKE_SYSROOT}/usr/lib/${{matrix.TRIPLET}}/pkgconfig CC=${{matrix.TRIPLET}}-gcc cmake -B build $CI_PARAMS -DCMAKE_C_FLAGS="-std=c99 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=0" ${{matrix.CMAKE_PARAMS}}
       - name: Build
         run: |
           cmake --build build --parallel
@@ -131,7 +129,7 @@ jobs:
 
   freebsd-cross:
     name: FreeBSD Cross
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
@@ -139,11 +137,11 @@ jobs:
         with:
           fetch-depth: 3
       - name: Build
-        uses: cross-platform-actions/action@v0.24.0
+        uses: cross-platform-actions/action@v0.29.0
         with:
           operating_system: freebsd
           architecture: x86-64
-          version: '13.2'
+          version: '14.3'
           memory: 4G
           shell: bash
           environment_variables: CI_PARAMS
